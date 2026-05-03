@@ -19,6 +19,12 @@ const icons = {
     '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20 34s13-8 13-19a7 7 0 0 0-13-4 7 7 0 0 0-13 4c0 11 13 19 13 19z"/><path d="M20 14v8M16 18h8"/></svg>',
   restaurant:
     '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 6v28M8 6v8a4 4 0 0 0 8 0V6M27 6v28M27 6c4 3 6 8 5 14h-5"/></svg>',
+  email:
+    '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="8" width="32" height="24" rx="2"/><path d="M4 12l16 10 16-10"/></svg>',
+  whatsapp:
+    '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M34 19a14 14 0 0 1-1.5 6.4 14.2 14.2 0 0 1-12.7 7.8 14 14 0 0 1-6.4-1.5L5 35l3.2-9.5A14 14 0 0 1 6.7 19 14.2 14.2 0 0 1 14.5 6.3 14 14 0 0 1 20.8 4.8h.8a14 14 0 0 1 12.4 13.4v.8z"/></svg>',
+  instagram:
+    '<svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="6" width="28" height="28" rx="7"/><path d="M27 19a7 7 0 1 1-6-6 7 7 0 0 1 6 6z"/><circle cx="29" cy="11" r="1.5" fill="currentColor" stroke="none"/></svg>',
 };
 
 const services = [
@@ -130,6 +136,12 @@ const commitments = [
   ["Intervention rapide", "Disponible sous 48h en France entiere. Creneaux tot le matin et weekend."],
 ];
 
+const contacts = [
+  { type: "Email", value: "contact@osiria.fr", link: "mailto:contact@osiria.fr", icon: "email" },
+  { type: "WhatsApp", value: "+33 6 00 00 00 00", link: "https://wa.me/33600000000", icon: "whatsapp" },
+  { type: "Instagram", value: "@osiria.fr", link: "https://instagram.com/osiria.fr", icon: "instagram" },
+];
+
 function mountList(selector, items, template) {
   const node = document.querySelector(selector);
   if (!node) return;
@@ -211,6 +223,17 @@ function initContent() {
         <div><h3>${title}</h3><p>${text}</p></div>
       </li>`
   );
+
+  mountList(
+    "[data-contacts]",
+    contacts,
+    (item) => `
+      <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="contact-card reveal">
+        <span class="contact-card__icon">${icons[item.icon]}</span>
+        <h3>${item.type}</h3>
+        <p>${item.value}</p>
+      </a>`
+  );
 }
 
 function initHeader() {
@@ -236,6 +259,21 @@ function initHeader() {
     nav.classList.remove("is-open");
     header?.classList.remove("is-open");
     document.body.classList.remove("nav-open");
+  });
+}
+
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const targetId = this.getAttribute("href");
+      if (targetId === "#") return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    });
   });
 }
 
@@ -363,5 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initContent();
   initHeader();
   initReveal();
+  initSmoothScroll();
   initLogoMarquee();
 });
