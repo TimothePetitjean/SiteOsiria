@@ -5,36 +5,18 @@
   height: var(--marquee-height);
   overflow: hidden;
   border-bottom: 1px solid var(--border);
-  background: rgba(250, 247, 242, 0.98);
-  backdrop-filter: blur(16px);
+  background: rgba(250, 247, 242, 0.96);
   pointer-events: none;
-}
-
-.logo-marquee::before,
-.logo-marquee::after {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 2;
-  width: 120px;
-  content: "";
-}
-
-.logo-marquee::before {
-  left: 0;
-  background: linear-gradient(90deg, var(--cream), rgba(250, 247, 242, 0));
-}
-
-.logo-marquee::after {
-  right: 0;
-  background: linear-gradient(270deg, var(--cream), rgba(250, 247, 242, 0));
+  transform: translateZ(0);
 }
 
 .logo-marquee__track {
   display: flex;
   width: max-content;
   height: 100%;
-  animation: marquee-scroll 48s linear infinite;
+  animation: marquee-scroll 150s linear infinite;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
 
@@ -42,36 +24,29 @@
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  gap: 42px;
-  padding-right: 42px;
+  gap: 30px;
+  padding-right: 30px;
 }
 
 .logo-marquee__item {
-  position: relative;
-  display: inline-grid;
-  width: 150px;
+  display: grid;
+  width: 108px;
   height: var(--marquee-height);
   place-items: center;
-  opacity: 0.78;
-}
-
-.logo-marquee__item::after {
-  position: absolute;
-  right: -21px;
-  width: 1px;
-  height: 18px;
-  background: var(--border-strong);
-  content: "";
+  opacity: 0.82;
 }
 
 .logo-marquee img {
   width: auto;
-  max-width: 116px;
+  max-width: 78px;
   max-height: 26px;
+  backface-visibility: hidden;
   object-fit: contain;
+  transform: translate3d(0, 0, 0);
 }
 
 .logo-marquee img[src*="agence-smith"] {
+  max-width: 84px;
   max-height: 30px;
 }
 
@@ -81,7 +56,7 @@
   }
 
   to {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
