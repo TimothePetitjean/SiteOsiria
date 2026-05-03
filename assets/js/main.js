@@ -257,8 +257,25 @@ function initReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
+function initMarquee() {
+  // Sélectionne le ou les bandeaux défilants.
+  // Ajoute l'attribut data-marquee ou la classe .marquee-track sur ton conteneur HTML.
+  const marquees = document.querySelectorAll('.marquee-track, [data-marquee]');
+
+  marquees.forEach((track) => {
+    // Clone les enfants pour créer l'illusion d'un défilement infini sans coupure
+    const items = Array.from(track.children);
+    items.forEach((item) => {
+      const clone = item.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true'); // Accessibilité : on cache les clones aux lecteurs d'écran
+      track.appendChild(clone);
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initContent();
   initHeader();
   initReveal();
+  initMarquee();
 });
