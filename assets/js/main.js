@@ -311,6 +311,14 @@ function initLogoMarquee() {
   let step = 118;
   let speed = 8;
 
+  const setLogo = (item, logoIndex) => {
+    const logo = logos[logoIndex];
+
+    item.logoIndex = logoIndex;
+    item.element.className = `logo-marquee__item ${logo.className}`;
+    item.image.src = logo.src;
+  };
+
   const render = () => {
     items.forEach((item) => {
       item.element.style.transform = `translate3d(${item.x.toFixed(2)}px, -50%, 0)`;
@@ -339,7 +347,8 @@ function initLogoMarquee() {
     const startX = -step * bufferItems;
 
     for (let index = 0; index < itemCount; index += 1) {
-      const logo = logos[index % logos.length];
+      const logoIndex = index % logos.length;
+      const logo = logos[logoIndex];
       const element = document.createElement("span");
       const image = document.createElement("img");
 
@@ -351,7 +360,7 @@ function initLogoMarquee() {
 
       element.appendChild(image);
       track.appendChild(element);
-      items.push({ element, x: startX + index * step });
+      items.push({ element, image, logoIndex, x: startX + index * step });
     }
 
     lastTime = performance.now();
@@ -368,10 +377,15 @@ function initLogoMarquee() {
       item.x += speed * delta;
     });
 
-    let leftMost = Math.min(...items.map((item) => item.x));
+    const leftMostItem = items.reduce((current, item) => (item.x < current.x ? item : current), items[0]);
+    let leftMost = leftMostItem.x;
+    let leftMostLogoIndex = leftMostItem.logoIndex;
+
     items.forEach((item) => {
       if (item.x > rightLimit) {
         item.x = leftMost - step;
+        leftMostLogoIndex = (leftMostLogoIndex - 1 + logos.length) % logos.length;
+        setLogo(item, leftMostLogoIndex);
         leftMost = item.x;
       }
     });
