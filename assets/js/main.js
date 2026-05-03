@@ -275,17 +275,17 @@ function initLogoMarquee() {
 
   const render = () => {
     items.forEach((item) => {
-      item.element.style.transform = `translate3d(${Math.round(item.x)}px, -50%, 0)`;
+      item.element.style.transform = `translate3d(${item.x.toFixed(2)}px, -50%, 0)`;
     });
   };
 
   const readConfig = () => {
     const isCompact = window.matchMedia("(max-width: 580px)").matches;
-    const itemWidth = isCompact ? 82 : 96;
-    const gap = isCompact ? 18 : 22;
+    const itemWidth = isCompact ? 112 : 138;
+    const gap = isCompact ? 22 : 30;
 
     step = itemWidth + gap;
-    speed = isCompact ? 7 : 8;
+    speed = isCompact ? 10 : 11;
   };
 
   const build = () => {

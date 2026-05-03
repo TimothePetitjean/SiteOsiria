@@ -1,11 +1,12 @@
 .logo-marquee {
+  --logo-size: 52px;
   position: fixed;
   inset: 0 0 auto;
   z-index: 130;
   height: var(--marquee-height);
   overflow: hidden;
   border-bottom: 1px solid var(--border);
-  background: rgba(250, 247, 242, 0.96);
+  background: var(--cream);
   pointer-events: none;
   transform: translateZ(0);
 }
@@ -22,26 +23,25 @@
   top: 50%;
   left: 0;
   display: grid;
-  width: 96px;
+  width: 138px;
   height: var(--marquee-height);
   place-items: center;
-  opacity: 0.84;
+  opacity: 0.9;
   transform: translate3d(0, -50%, 0);
   will-change: transform;
 }
 
 .logo-marquee img {
-  width: auto;
-  max-width: 72px;
-  max-height: 25px;
+  width: var(--logo-size);
+  height: var(--logo-size);
   backface-visibility: hidden;
   object-fit: contain;
   transform: translate3d(0, 0, 0);
 }
 
 .logo-marquee__item--smith img {
-  max-width: 78px;
-  max-height: 28px;
+  width: var(--logo-size);
+  height: var(--logo-size);
 }
 
 .site-header {
