@@ -109,15 +109,8 @@
 
   .quote-bar {
     inset: auto 14px 14px;
-    align-items: stretch;
-    flex-direction: column;
-    gap: 12px;
+    max-width: 360px;
     padding: 16px;
-  }
-
-  .quote-bar p {
-    font-size: 18px;
-    text-align: center;
   }
 
   .section-heading {

@@ -225,30 +225,21 @@
   position: fixed;
   inset: auto 24px 20px;
   z-index: 120;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  max-width: 980px;
+  display: grid;
+  place-items: center;
+  max-width: 420px;
   margin-inline: auto;
   border: 1px solid rgba(176, 138, 78, 0.28);
   background: rgba(14, 14, 14, 0.94);
   box-shadow: 0 20px 70px rgba(14, 14, 14, 0.22);
-  padding: 14px 16px 14px 24px;
+  padding: 14px;
   backdrop-filter: blur(18px);
-}
-
-.quote-bar p {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.76);
-  font-family: var(--font-serif);
-  font-size: 21px;
-  line-height: 1.2;
 }
 
 .quote-bar .button {
   min-height: 48px;
-  padding-inline: 28px;
+  width: 100%;
+  padding-inline: 32px;
   white-space: nowrap;
 }
 
