@@ -257,25 +257,111 @@ function initReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
-function initMarquee() {
-  // Sélectionne le ou les bandeaux défilants.
-  // Ajoute l'attribut data-marquee ou la classe .marquee-track sur ton conteneur HTML.
-  const marquees = document.querySelectorAll('.marquee-track, [data-marquee]');
+function initLogoMarquee() {
+  const root = document.querySelector("[data-logo-marquee]");
+  const track = root?.querySelector(".logo-marquee__track");
+  if (!root || !track) return;
 
-  marquees.forEach((track) => {
-    // Clone les enfants pour créer l'illusion d'un défilement infini sans coupure
-    const items = Array.from(track.children);
+  const logos = [
+    { src: "assets/img/partners/blackbox.png", className: "logo-marquee__item--blackbox" },
+    { src: "assets/img/partners/agence-smith.png", className: "logo-marquee__item--smith" },
+  ];
+
+  let items = [];
+  let frameId = 0;
+  let lastTime = performance.now();
+  let step = 118;
+  let speed = 8;
+
+  const render = () => {
     items.forEach((item) => {
-      const clone = item.cloneNode(true);
-      clone.setAttribute('aria-hidden', 'true'); // Accessibilité : on cache les clones aux lecteurs d'écran
-      track.appendChild(clone);
+      item.element.style.transform = `translate3d(${Math.round(item.x)}px, -50%, 0)`;
     });
-  });
+  };
+
+  const readConfig = () => {
+    const isCompact = window.matchMedia("(max-width: 580px)").matches;
+    const itemWidth = isCompact ? 82 : 96;
+    const gap = isCompact ? 18 : 22;
+
+    step = itemWidth + gap;
+    speed = isCompact ? 7 : 8;
+  };
+
+  const build = () => {
+    readConfig();
+    cancelAnimationFrame(frameId);
+    track.textContent = "";
+    items = [];
+
+    const viewportWidth = root.clientWidth || window.innerWidth;
+    const bufferItems = 5;
+    let itemCount = Math.ceil(viewportWidth / step) + bufferItems * 2;
+    if (itemCount % logos.length !== 0) itemCount += 1;
+    const startX = -step * bufferItems;
+
+    for (let index = 0; index < itemCount; index += 1) {
+      const logo = logos[index % logos.length];
+      const element = document.createElement("span");
+      const image = document.createElement("img");
+
+      element.className = `logo-marquee__item ${logo.className}`;
+      image.src = logo.src;
+      image.alt = "";
+      image.decoding = "async";
+      image.draggable = false;
+
+      element.appendChild(image);
+      track.appendChild(element);
+      items.push({ element, x: startX + index * step });
+    }
+
+    lastTime = performance.now();
+    render();
+    frameId = requestAnimationFrame(tick);
+  };
+
+  const tick = (time) => {
+    const delta = Math.min(Math.max((time - lastTime) / 1000, 0), 0.05);
+    const rightLimit = (root.clientWidth || window.innerWidth) + step;
+    lastTime = time;
+
+    items.forEach((item) => {
+      item.x += speed * delta;
+    });
+
+    let leftMost = Math.min(...items.map((item) => item.x));
+    items.forEach((item) => {
+      if (item.x > rightLimit) {
+        item.x = leftMost - step;
+        leftMost = item.x;
+      }
+    });
+
+    render();
+    frameId = requestAnimationFrame(tick);
+  };
+
+  const resetClock = () => {
+    lastTime = performance.now();
+  };
+
+  let resizeTimer = 0;
+  const scheduleRebuild = () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(build, 120);
+  };
+
+  build();
+  window.addEventListener("resize", scheduleRebuild, { passive: true });
+  window.addEventListener("focus", resetClock);
+  window.addEventListener("pageshow", resetClock);
+  document.addEventListener("visibilitychange", resetClock);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   initContent();
   initHeader();
   initReveal();
-  initMarquee();
+  initLogoMarquee();
 });

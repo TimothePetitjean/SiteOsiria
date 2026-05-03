@@ -158,24 +158,19 @@
     padding-inline: 20px;
   }
 
-  .logo-marquee__group {
-    gap: 22px;
-    padding-right: 22px;
-  }
-
   .logo-marquee__item {
-    width: 92px;
+    width: 82px;
     height: var(--marquee-height);
   }
 
   .logo-marquee img {
-    max-width: 66px;
+    max-width: 62px;
     max-height: 22px;
   }
 
-  .logo-marquee img[src*="agence-smith"] {
-    max-width: 72px;
-    max-height: 25px;
+  .logo-marquee__item--smith img {
+    max-width: 66px;
+    max-height: 24px;
   }
 
   .hero__title {
