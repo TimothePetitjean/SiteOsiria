@@ -9,7 +9,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding-block: 150px 80px;
+  padding-block: calc(150px + var(--marquee-height)) 80px;
 }
 
 .hero__rings,

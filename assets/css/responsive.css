@@ -44,6 +44,10 @@
     --header-height: 72px;
   }
 
+  body {
+    padding-bottom: 150px;
+  }
+
   .site-header {
     grid-template-columns: auto auto;
     justify-content: space-between;
@@ -57,7 +61,7 @@
 
   .main-nav {
     position: fixed;
-    inset: var(--header-height) 0 auto;
+    inset: calc(var(--marquee-height) + var(--header-height)) 0 auto;
     display: grid;
     gap: 0;
     padding: 16px 28px 24px;
@@ -85,12 +89,8 @@
     border-bottom: 0;
   }
 
-  .header-cta {
-    display: none;
-  }
-
   .hero {
-    padding-block: 120px 70px;
+    padding-block: calc(120px + var(--marquee-height)) 70px;
   }
 
   .hero__title {
@@ -105,6 +105,19 @@
 
   .button {
     width: 100%;
+  }
+
+  .quote-bar {
+    inset: auto 14px 14px;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .quote-bar p {
+    font-size: 18px;
+    text-align: center;
   }
 
   .section-heading {
@@ -136,9 +149,37 @@
 }
 
 @media (max-width: 580px) {
+  :root {
+    --marquee-height: 46px;
+  }
+
   .section-shell,
   .site-header {
     padding-inline: 20px;
+  }
+
+  .logo-marquee__group {
+    gap: 28px;
+    padding-right: 28px;
+  }
+
+  .logo-marquee__item {
+    width: 118px;
+    height: var(--marquee-height);
+  }
+
+  .logo-marquee__item::after {
+    right: -14px;
+    height: 16px;
+  }
+
+  .logo-marquee img {
+    max-width: 92px;
+    max-height: 23px;
+  }
+
+  .logo-marquee img[src*="agence-smith"] {
+    max-height: 26px;
   }
 
   .hero__title {

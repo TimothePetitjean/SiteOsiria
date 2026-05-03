@@ -1,9 +1,96 @@
-.site-header {
+.logo-marquee {
   position: fixed;
   inset: 0 0 auto;
+  z-index: 130;
+  height: var(--marquee-height);
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: rgba(250, 247, 242, 0.98);
+  backdrop-filter: blur(16px);
+  pointer-events: none;
+}
+
+.logo-marquee::before,
+.logo-marquee::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 120px;
+  content: "";
+}
+
+.logo-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--cream), rgba(250, 247, 242, 0));
+}
+
+.logo-marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--cream), rgba(250, 247, 242, 0));
+}
+
+.logo-marquee__track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: marquee-scroll 48s linear infinite;
+  will-change: transform;
+}
+
+.logo-marquee__group {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 42px;
+  padding-right: 42px;
+}
+
+.logo-marquee__item {
+  position: relative;
+  display: inline-grid;
+  width: 150px;
+  height: var(--marquee-height);
+  place-items: center;
+  opacity: 0.78;
+}
+
+.logo-marquee__item::after {
+  position: absolute;
+  right: -21px;
+  width: 1px;
+  height: 18px;
+  background: var(--border-strong);
+  content: "";
+}
+
+.logo-marquee img {
+  width: auto;
+  max-width: 116px;
+  max-height: 26px;
+  object-fit: contain;
+}
+
+.logo-marquee img[src*="agence-smith"] {
+  max-height: 30px;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.site-header {
+  position: fixed;
+  inset: var(--marquee-height) 0 auto;
   z-index: 100;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 36px;
   min-height: var(--header-height);
@@ -41,7 +128,6 @@
 }
 
 .main-nav a,
-.header-cta,
 .button,
 .button-link {
   font-size: 12px;
@@ -58,17 +144,6 @@
 
 .main-nav a:hover {
   color: var(--gold);
-}
-
-.header-cta {
-  background: var(--ink);
-  color: var(--white);
-  padding: 12px 26px;
-  transition: background 180ms ease;
-}
-
-.header-cta:hover {
-  background: var(--gold);
 }
 
 .nav-toggle {
@@ -185,6 +260,37 @@
 
 .button--gold:hover {
   background: var(--gold-light);
+}
+
+.quote-bar {
+  position: fixed;
+  inset: auto 24px 20px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 980px;
+  margin-inline: auto;
+  border: 1px solid rgba(176, 138, 78, 0.28);
+  background: rgba(14, 14, 14, 0.94);
+  box-shadow: 0 20px 70px rgba(14, 14, 14, 0.22);
+  padding: 14px 16px 14px 24px;
+  backdrop-filter: blur(18px);
+}
+
+.quote-bar p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-family: var(--font-serif);
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.quote-bar .button {
+  min-height: 48px;
+  padding-inline: 28px;
+  white-space: nowrap;
 }
 
 .button-link {

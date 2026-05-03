@@ -16,6 +16,7 @@
   --shadow: 0 22px 60px rgba(32, 25, 17, 0.08);
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "DM Sans", Arial, sans-serif;
+  --marquee-height: 50px;
   --header-height: 84px;
 }
 
@@ -31,6 +32,7 @@ html {
 
 body {
   margin: 0;
+  padding-bottom: 92px;
   background: var(--cream);
   color: var(--text);
   font-family: var(--font-sans);
