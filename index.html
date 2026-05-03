@@ -23,10 +23,6 @@
     <script src="assets/js/main.js" defer></script>
   </head>
   <body>
-    <aside class="logo-marquee" aria-hidden="true" data-logo-marquee>
-      <div class="logo-marquee__track"></div>
-    </aside>
-
     <header class="site-header" data-header>
       <a class="brand" href="#accueil" aria-label="Accueil Osiria">OSI<span>R</span>IA</a>
 
@@ -136,17 +132,17 @@
           <p>Avis verifies collectes apres chaque intervention. Aucune selection.</p>
         </div>
 
-        <div class="score-panel">
+        <div class="score-panel" data-reviews-panel>
           <article class="score-panel__rating">
-            <strong>4.9<span>/5</span></strong>
+            <strong data-rating-value>4.9<span>/5</span></strong>
             <div class="stars" aria-label="Note 5 sur 5">★★★★★</div>
-            <p>200+ avis verifies</p>
+            <p data-rating-count>200+ avis verifies</p>
           </article>
           <article class="score-panel__bars" aria-label="Repartition des avis">
-            <div class="rating-bar"><span>5 etoiles</span><div><i style="width: 87%"></i></div><b>87%</b></div>
-            <div class="rating-bar"><span>4 etoiles</span><div><i style="width: 10%"></i></div><b>10%</b></div>
-            <div class="rating-bar"><span>3 etoiles</span><div><i style="width: 2%"></i></div><b>2%</b></div>
-            <div class="rating-bar"><span>2 etoiles</span><div><i style="width: 1%"></i></div><b>1%</b></div>
+            <div class="rating-bar" data-rating-bar="5"><span>5 etoiles</span><div><i style="width: 87%"></i></div><b>87%</b></div>
+            <div class="rating-bar" data-rating-bar="4"><span>4 etoiles</span><div><i style="width: 10%"></i></div><b>10%</b></div>
+            <div class="rating-bar" data-rating-bar="3"><span>3 etoiles</span><div><i style="width: 2%"></i></div><b>2%</b></div>
+            <div class="rating-bar" data-rating-bar="2"><span>2 etoiles</span><div><i style="width: 1%"></i></div><b>1%</b></div>
           </article>
           <blockquote class="score-panel__quote">
             <p>Une equipe qui incarne l'excellence a domicile. Je ne ferai plus jamais appel a quelqu'un d'autre.</p>
@@ -188,7 +184,7 @@
         <div class="contact-card section-shell">
           <h2>Retrouver un interieur <em>impeccable</em></h2>
           <p>Contactez-nous pour un devis gratuit et personnalise. Reponse garantie sous 24 heures ouvrees.</p>
-          <p class="contact-card__detail">Ou par telephone : +33 (0)1 XX XX XX XX</p>
+          <div class="contact-methods" data-contacts></div>
           <div class="zones">
             <span>Zone d'intervention</span>
             <p>Paris · Lyon · Marseille · Bordeaux<br />Lille · Toulouse · Et partout en France</p>
@@ -226,8 +222,9 @@
         </div>
         <div>
           <h2>Contact</h2>
-          <a href="mailto:contact@osiria.fr">contact@osiria.fr</a>
-          <a href="tel:+33100000000">+33 (0)1 XX XX XX XX</a>
+          <a href="mailto:Osiria.direction@gmail.com">Osiria.direction@gmail.com</a>
+          <a href="https://wa.me/33613868355" target="_blank" rel="noopener noreferrer">+33 6 13 86 83 55</a>
+          <a href="https://www.instagram.com/osiria.nettoyage?igsh=MXNmN3JwYzZ5ODJveQ==" target="_blank" rel="noopener noreferrer">@osiria.nettoyage</a>
           <span>France entiere</span>
           <span>Lun - Sam, 8h - 19h</span>
         </div>

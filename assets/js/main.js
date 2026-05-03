@@ -121,6 +121,16 @@ const reviews = [
   },
 ];
 
+const googleReviewsConfig = {
+  // Fill these values to enable live Google reviews sync.
+  placeId: "",
+  apiKey: "",
+  languageCode: "fr",
+  regionCode: "FR",
+  // Optional: use your own backend endpoint to avoid exposing API key in frontend.
+  proxyEndpoint: "",
+};
+
 const partners = [
   ["BLACKBOX", "Partenaire strategique", true],
   ["HAUSSMANN+", "Agence immobiliere"],
@@ -137,10 +147,12 @@ const commitments = [
 ];
 
 const contacts = [
-  { type: "Email", value: "contact@osiria.fr", link: "mailto:contact@osiria.fr", icon: "email" },
-  { type: "WhatsApp", value: "+33 6 00 00 00 00", link: "https://wa.me/33600000000", icon: "whatsapp" },
-  { type: "Instagram", value: "@osiria.fr", link: "https://instagram.com/osiria.fr", icon: "instagram" },
+  { type: "Email", value: "Osiria.direction@gmail.com", link: "mailto:Osiria.direction@gmail.com", icon: "email" },
+  { type: "WhatsApp", value: "+33 6 13 86 83 55", link: "https://wa.me/33613868355", icon: "whatsapp" },
+  { type: "Instagram", value: "@osiria.nettoyage", link: "https://www.instagram.com/osiria.nettoyage?igsh=MXNmN3JwYzZ5ODJveQ==", icon: "instagram" },
 ];
+
+const googleReviewsShareLink = "https://share.google/wXvCFwXebhhjbii5w";
 
 function mountList(selector, items, template) {
   const node = document.querySelector(selector);
@@ -150,6 +162,158 @@ function mountList(selector, items, template) {
 
 function starsMarkup() {
   return '<div class="stars" aria-label="Note 5 sur 5">★★★★★</div>';
+}
+
+function starsFromRating(rating) {
+  const fullStars = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+  return "★★★★★".slice(0, fullStars) + "☆☆☆☆☆".slice(0, 5 - fullStars);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function initialsFromName(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "CL";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+function normalizeGoogleReview(review) {
+  const text =
+    review?.text?.text ||
+    review?.originalText?.text ||
+    review?.text ||
+    "Avis client";
+  const name =
+    review?.authorAttribution?.displayName ||
+    review?.author_name ||
+    "Client";
+
+  return {
+    text: String(text),
+    name: String(name),
+    detail: "Avis Google",
+    initials: initialsFromName(name),
+    rating: Number(review?.rating || 5),
+  };
+}
+
+function renderReviewsList(items) {
+  mountList(
+    "[data-reviews]",
+    items,
+    (item) => `
+      <article class="review-card reveal">
+        <div class="stars" aria-label="Note ${item.rating || 5} sur 5">${starsFromRating(item.rating || 5)}</div>
+        <p>${escapeHtml(item.text)}</p>
+        <div class="review-card__author">
+          <span class="review-card__avatar">${escapeHtml(item.initials)}</span>
+          <span><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.detail)}</span></span>
+        </div>
+      </article>`
+  );
+}
+
+function updateRatingsPanel(rating, userCount, fetchedReviews) {
+  const ratingValue = document.querySelector("[data-rating-value]");
+  const ratingCount = document.querySelector("[data-rating-count]");
+  const ratingStars = document.querySelector(".score-panel__rating .stars");
+
+  if (ratingValue) {
+    const safeRating = Number(rating || 0).toFixed(1);
+    ratingValue.innerHTML = `${safeRating}<span>/5</span>`;
+  }
+
+  if (ratingCount) {
+    ratingCount.textContent = `${Number(userCount || 0)} avis verifies`;
+  }
+
+  if (ratingStars) {
+    const stars = starsFromRating(rating || 0);
+    ratingStars.textContent = stars;
+    ratingStars.setAttribute("aria-label", `Note ${Number(rating || 0).toFixed(1)} sur 5`);
+  }
+
+  // Google Places does not provide a full histogram in this endpoint.
+  // We approximate bar distribution with fetched review sample.
+  const sample = Array.isArray(fetchedReviews) ? fetchedReviews : [];
+  if (!sample.length) return;
+
+  const counts = { 5: 0, 4: 0, 3: 0, 2: 0 };
+  sample.forEach((review) => {
+    const rounded = Math.round(Number(review.rating || 0));
+    if (counts[rounded] !== undefined) counts[rounded] += 1;
+  });
+
+  const total = sample.length || 1;
+  Object.entries(counts).forEach(([star, count]) => {
+    const row = document.querySelector(`[data-rating-bar="${star}"]`);
+    if (!row) return;
+
+    const percent = Math.round((count / total) * 100);
+    const bar = row.querySelector("i");
+    const value = row.querySelector("b");
+    if (bar) bar.style.width = `${percent}%`;
+    if (value) value.textContent = `${percent}%`;
+  });
+}
+
+async function initLiveGoogleReviews() {
+  const { placeId, apiKey, languageCode, regionCode, proxyEndpoint } = googleReviewsConfig;
+  if (!placeId) return;
+
+  try {
+    const endpoint = proxyEndpoint
+      ? `${proxyEndpoint}?placeId=${encodeURIComponent(placeId)}`
+      : `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=${encodeURIComponent(
+          languageCode
+        )}&regionCode=${encodeURIComponent(regionCode)}`;
+
+    const response = await fetch(endpoint, {
+      headers: proxyEndpoint
+        ? {}
+        : {
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "rating,userRatingCount,reviews",
+          },
+    });
+
+    if (!response.ok) throw new Error(`Google reviews request failed (${response.status})`);
+    const data = await response.json();
+
+    const normalized = (data.reviews || []).map(normalizeGoogleReview).filter((item) => item.text);
+    if (normalized.length) renderReviewsList(normalized);
+    updateRatingsPanel(data.rating, data.userRatingCount, normalized);
+  } catch (error) {
+    console.warn("Google reviews sync failed:", error);
+  }
+}
+
+function initSimpleReviewsWidget() {
+  const panel = document.querySelector("[data-reviews-panel]");
+  const reviewsNode = document.querySelector("[data-reviews]");
+  if (!reviewsNode) return;
+
+  if (panel) panel.style.display = "none";
+  reviewsNode.classList.add("reviews-grid--widget");
+  if (!document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) {
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.head.appendChild(script);
+  }
+
+  reviewsNode.innerHTML = `
+    <div class="reviews-widget reveal">
+      <div class="elfsight-app-887f3d24-5b37-49e2-9216-ae1d7f53b926" data-elfsight-app-lazy></div>
+    </div>`;
 }
 
 function initContent() {
@@ -228,8 +392,8 @@ function initContent() {
     "[data-contacts]",
     contacts,
     (item) => `
-      <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="contact-card reveal">
-        <span class="contact-card__icon">${icons[item.icon]}</span>
+      <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="contact-method reveal">
+        <span class="contact-method__icon">${icons[item.icon]}</span>
         <h3>${item.type}</h3>
         <p>${item.value}</p>
       </a>`
@@ -259,6 +423,24 @@ function initHeader() {
     nav.classList.remove("is-open");
     header?.classList.remove("is-open");
     document.body.classList.remove("nav-open");
+  });
+}
+
+function fixContactLinks() {
+  // Donne automatiquement l'ID "contact" à la section qui contient les réseaux
+  const contactsContainer = document.querySelector("[data-contacts]");
+  if (contactsContainer) {
+    const contactSection = contactsContainer.closest("section") || contactsContainer.parentElement;
+    if (contactSection) {
+      contactSection.id = "contact";
+    }
+  }
+
+  // Modifie automatiquement tous les boutons contenant le mot "devis" pour pointer vers #contact
+  document.querySelectorAll("a").forEach((link) => {
+    if (link.textContent.toLowerCase().includes("devis")) {
+      link.setAttribute("href", "#contact");
+    }
   });
 }
 
@@ -295,126 +477,11 @@ function initReveal() {
   elements.forEach((element) => observer.observe(element));
 }
 
-function initLogoMarquee() {
-  const root = document.querySelector("[data-logo-marquee]");
-  const track = root?.querySelector(".logo-marquee__track");
-  if (!root || !track) return;
-
-  const logos = [
-    { src: "assets/img/partners/blackbox.png", className: "logo-marquee__item--blackbox" },
-    { src: "assets/img/partners/agence-smith.png", className: "logo-marquee__item--smith" },
-  ];
-
-  let items = [];
-  let frameId = 0;
-  let lastTime = performance.now();
-  let step = 118;
-  let speed = 8;
-
-  const setLogo = (item, logoIndex) => {
-    const logo = logos[logoIndex];
-
-    item.logoIndex = logoIndex;
-    item.element.className = `logo-marquee__item ${logo.className}`;
-    item.image.src = logo.src;
-  };
-
-  const render = () => {
-    items.forEach((item) => {
-      item.element.style.transform = `translate3d(${item.x.toFixed(2)}px, -50%, 0)`;
-    });
-  };
-
-  const readConfig = () => {
-    const isCompact = window.matchMedia("(max-width: 580px)").matches;
-    const itemWidth = isCompact ? 112 : 138;
-    const gap = isCompact ? 22 : 30;
-
-    step = itemWidth + gap;
-    speed = isCompact ? 10 : 11;
-  };
-
-  const build = () => {
-    readConfig();
-    cancelAnimationFrame(frameId);
-    track.textContent = "";
-    items = [];
-
-    const viewportWidth = root.clientWidth || window.innerWidth;
-    const bufferItems = 5;
-    let itemCount = Math.ceil(viewportWidth / step) + bufferItems * 2;
-    if (itemCount % logos.length !== 0) itemCount += 1;
-    const startX = -step * bufferItems;
-
-    for (let index = 0; index < itemCount; index += 1) {
-      const logoIndex = index % logos.length;
-      const logo = logos[logoIndex];
-      const element = document.createElement("span");
-      const image = document.createElement("img");
-
-      element.className = `logo-marquee__item ${logo.className}`;
-      image.src = logo.src;
-      image.alt = "";
-      image.decoding = "async";
-      image.draggable = false;
-
-      element.appendChild(image);
-      track.appendChild(element);
-      items.push({ element, image, logoIndex, x: startX + index * step });
-    }
-
-    lastTime = performance.now();
-    render();
-    frameId = requestAnimationFrame(tick);
-  };
-
-  const tick = (time) => {
-    const delta = Math.min(Math.max((time - lastTime) / 1000, 0), 0.05);
-    const rightLimit = (root.clientWidth || window.innerWidth) + step;
-    lastTime = time;
-
-    items.forEach((item) => {
-      item.x += speed * delta;
-    });
-
-    const leftMostItem = items.reduce((current, item) => (item.x < current.x ? item : current), items[0]);
-    let leftMost = leftMostItem.x;
-    let leftMostLogoIndex = leftMostItem.logoIndex;
-
-    items.forEach((item) => {
-      if (item.x > rightLimit) {
-        item.x = leftMost - step;
-        leftMostLogoIndex = (leftMostLogoIndex - 1 + logos.length) % logos.length;
-        setLogo(item, leftMostLogoIndex);
-        leftMost = item.x;
-      }
-    });
-
-    render();
-    frameId = requestAnimationFrame(tick);
-  };
-
-  const resetClock = () => {
-    lastTime = performance.now();
-  };
-
-  let resizeTimer = 0;
-  const scheduleRebuild = () => {
-    window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(build, 120);
-  };
-
-  build();
-  window.addEventListener("resize", scheduleRebuild, { passive: true });
-  window.addEventListener("focus", resetClock);
-  window.addEventListener("pageshow", resetClock);
-  document.addEventListener("visibilitychange", resetClock);
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   initContent();
+  initSimpleReviewsWidget();
   initHeader();
   initReveal();
+  fixContactLinks();
   initSmoothScroll();
-  initLogoMarquee();
 });

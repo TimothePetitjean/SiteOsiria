@@ -61,7 +61,7 @@
 
   .main-nav {
     position: fixed;
-    inset: calc(var(--marquee-height) + var(--header-height)) 0 auto;
+    inset: var(--header-height) 0 auto;
     display: grid;
     gap: 0;
     padding: 16px 28px 24px;
@@ -90,7 +90,7 @@
   }
 
   .hero {
-    padding-block: calc(120px + var(--marquee-height)) 70px;
+    padding-block: 120px 70px;
   }
 
   .hero__title {
@@ -135,39 +135,40 @@
     padding: 42px 28px;
   }
 
+  .contact-methods {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .footer-bottom {
     align-items: start;
     flex-direction: column;
   }
+
+  .reviews-widget {
+    padding: 26px 22px;
+  }
 }
 
 @media (max-width: 580px) {
-  :root {
-    --marquee-height: 54px;
-  }
-
-  .logo-marquee {
-    --logo-size: 44px;
-  }
-
   .section-shell,
   .site-header {
     padding-inline: 20px;
   }
 
-  .logo-marquee__item {
-    width: 112px;
-    height: var(--marquee-height);
+  .reviews-widget__cta {
+    width: 100%;
   }
 
-  .logo-marquee img {
-    width: var(--logo-size);
-    height: var(--logo-size);
+  .reviews-widget__actions {
+    flex-direction: column;
   }
 
-  .logo-marquee__item--smith img {
-    width: var(--logo-size);
-    height: var(--logo-size);
+  .reviews-widget__list {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-methods {
+    grid-template-columns: 1fr;
   }
 
   .hero__title {

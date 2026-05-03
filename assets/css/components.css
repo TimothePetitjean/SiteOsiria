@@ -1,52 +1,6 @@
-.logo-marquee {
-  --logo-size: 52px;
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 130;
-  height: var(--marquee-height);
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
-  background: var(--cream);
-  pointer-events: none;
-  transform: translateZ(0);
-}
-
-.logo-marquee__track {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.logo-marquee__item {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  display: grid;
-  width: 138px;
-  height: var(--marquee-height);
-  place-items: center;
-  opacity: 0.9;
-  transform: translate3d(0, -50%, 0);
-  will-change: transform;
-}
-
-.logo-marquee img {
-  width: var(--logo-size);
-  height: var(--logo-size);
-  backface-visibility: hidden;
-  object-fit: contain;
-  transform: translate3d(0, 0, 0);
-}
-
-.logo-marquee__item--smith img {
-  width: var(--logo-size);
-  height: var(--logo-size);
-}
-
 .site-header {
   position: fixed;
-  inset: var(--marquee-height) 0 auto;
+  inset: 0 0 auto;
   z-index: 100;
   display: grid;
   grid-template-columns: auto 1fr;

@@ -9,7 +9,7 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding-block: calc(150px + var(--marquee-height)) 80px;
+  padding-block: 150px 80px;
 }
 
 .hero__rings,
@@ -388,6 +388,53 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.reviews-grid--widget {
+  display: block;
+}
+
+.reviews-widget {
+  display: grid;
+  gap: 18px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  padding: 34px 30px;
+}
+
+.reviews-widget h3 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 300;
+}
+
+.reviews-widget p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.reviews-widget__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.reviews-widget__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.reviews-widget__list .review-card {
+  border: 1px solid var(--border);
+}
+
+.reviews-widget__cta {
+  width: fit-content;
+}
+
 .review-card {
   padding: 42px 34px;
 }
@@ -601,6 +648,57 @@
   margin: 18px 0 0 !important;
   color: rgba(255, 255, 255, 0.28) !important;
   font-size: 12px !important;
+}
+
+.contact-methods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.contact-method {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  text-decoration: none;
+  padding: 16px 14px;
+  transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.contact-method:hover {
+  border-color: rgba(176, 138, 78, 0.8);
+  background: rgba(176, 138, 78, 0.12);
+  transform: translateY(-2px);
+}
+
+.contact-method__icon {
+  width: 28px;
+  height: 28px;
+  color: var(--gold);
+}
+
+.contact-method__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.contact-method h3 {
+  margin: 0;
+  color: var(--white);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.contact-method p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .zones {
