@@ -1,0 +1,90 @@
+:root {
+  --cream: #faf7f2;
+  --cream-2: #f3eee6;
+  --cream-3: #ebe4d8;
+  --white: #ffffff;
+  --ink: #0e0e0e;
+  --ink-soft: #1c1c1c;
+  --text: #2a2420;
+  --muted: #766a61;
+  --dim: #aaa197;
+  --gold: #b08a4e;
+  --gold-light: #c9a46a;
+  --gold-pale: #e8d5a8;
+  --border: rgba(176, 138, 78, 0.16);
+  --border-strong: rgba(176, 138, 78, 0.32);
+  --shadow: 0 22px 60px rgba(32, 25, 17, 0.08);
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "DM Sans", Arial, sans-serif;
+  --header-height: 84px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: var(--gold-pale);
+  color: var(--ink);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
