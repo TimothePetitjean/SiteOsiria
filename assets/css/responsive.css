@@ -108,9 +108,12 @@
   }
 
   .quote-bar {
-    inset: auto 14px 14px;
-    max-width: 360px;
-    padding: 16px;
+    bottom: 14px;
+    max-width: calc(100% - 28px);
+  }
+
+  .quote-bar .button {
+    min-width: min(310px, calc(100vw - 28px));
   }
 
   .section-heading {

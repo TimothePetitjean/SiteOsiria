@@ -578,6 +578,10 @@
   grid-template-columns: 1fr 1fr;
 }
 
+.devis-main {
+  padding-top: var(--header-height);
+}
+
 .commitments {
   background: var(--cream-3);
   padding-block: 100px;
@@ -642,6 +646,12 @@
   color: rgba(255, 255, 255, 0.48);
   font-size: 14px;
   line-height: 1.75;
+}
+
+.contact-back {
+  display: inline-flex;
+  margin-bottom: 34px;
+  color: var(--gold);
 }
 
 .contact-card__detail {

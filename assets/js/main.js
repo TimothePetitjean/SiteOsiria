@@ -427,21 +427,14 @@ function initHeader() {
 }
 
 function fixContactLinks() {
-  // Donne automatiquement l'ID "contact" à la section qui contient les réseaux
   const contactsContainer = document.querySelector("[data-contacts]");
   if (contactsContainer) {
     const contactSection = contactsContainer.closest("section") || contactsContainer.parentElement;
-    if (contactSection) {
+    if (contactSection && !contactSection.id) {
       contactSection.id = "contact";
     }
   }
 
-  // Modifie automatiquement tous les boutons contenant le mot "devis" pour pointer vers #contact
-  document.querySelectorAll("a").forEach((link) => {
-    if (link.textContent.toLowerCase().includes("devis")) {
-      link.setAttribute("href", "#contact");
-    }
-  });
 }
 
 function initSmoothScroll() {
