@@ -650,8 +650,33 @@
 
 .contact-back {
   display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 34px;
+  border: 1px solid rgba(176, 138, 78, 0.48);
+  padding: 0 18px;
   color: var(--gold);
+  transition: background 180ms ease, border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.contact-back::before {
+  content: "<-";
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 1;
+  transition: transform 180ms ease;
+}
+
+.contact-back:hover {
+  border-color: var(--gold-light);
+  background: var(--gold);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.contact-back:hover::before {
+  transform: translateX(-3px);
 }
 
 .contact-card__detail {

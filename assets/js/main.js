@@ -404,10 +404,6 @@ function initHeader() {
   const header = document.querySelector("[data-header]");
   const nav = document.querySelector("[data-nav]");
   const toggle = document.querySelector("[data-nav-toggle]");
-  const syncHeader = () => header?.classList.toggle("is-scrolled", window.scrollY > 50);
-
-  syncHeader();
-  window.addEventListener("scroll", syncHeader, { passive: true });
 
   toggle?.addEventListener("click", () => {
     const isOpen = toggle.getAttribute("aria-expanded") === "true";
