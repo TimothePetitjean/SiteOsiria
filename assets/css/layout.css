@@ -692,6 +692,11 @@
   margin-top: 24px;
 }
 
+.contact-methods--enhanced {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
 .contact-method {
   display: grid;
   justify-items: start;
@@ -734,6 +739,53 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
   line-height: 1.45;
+}
+
+.contact-method--form {
+  align-content: start;
+  gap: 10px;
+  grid-column: 1 / -1;
+}
+
+.contact-method--form input,
+.contact-method--form textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 11px;
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.contact-method--form input::placeholder,
+.contact-method--form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.contact-method--form input:focus-visible,
+.contact-method--form textarea:focus-visible {
+  outline: 2px solid rgba(176, 138, 78, 0.72);
+  outline-offset: 1px;
+}
+
+.contact-method--form button {
+  border: 1px solid rgba(176, 138, 78, 0.62);
+  background: transparent;
+  padding: 10px 12px;
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+
+.contact-method--form button:hover {
+  border-color: var(--gold-light);
+  background: var(--gold);
+  color: var(--ink);
 }
 
 .zones {

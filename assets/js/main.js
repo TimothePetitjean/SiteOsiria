@@ -147,12 +147,17 @@ const commitments = [
 ];
 
 const contacts = [
-  { type: "Email", value: "Osiria.direction@gmail.com", link: "mailto:Osiria.direction@gmail.com", icon: "email" },
   { type: "WhatsApp", value: "+33 6 13 86 83 55", link: "https://wa.me/33613868355", icon: "whatsapp" },
   { type: "Instagram", value: "@osiria.nettoyage", link: "https://www.instagram.com/osiria.nettoyage?igsh=MXNmN3JwYzZ5ODJveQ==", icon: "instagram" },
 ];
 
 const googleReviewsShareLink = "https://share.google/wXvCFwXebhhjbii5w";
+
+const emailJsQuoteConfig = {
+  publicKey: "09r7iQxVJC1vzMWoj",
+  serviceId: "service_fqptxtd",
+  templateId: "template_5q2egov",
+};
 
 function mountList(selector, items, template) {
   const node = document.querySelector(selector);
@@ -398,6 +403,23 @@ function initContent() {
         <p>${item.value}</p>
       </a>`
   );
+
+  const contactsNode = document.querySelector("[data-contacts]");
+  if (contactsNode) {
+    contactsNode.classList.add("contact-methods--enhanced");
+    contactsNode.insertAdjacentHTML(
+      "afterbegin",
+      `
+      <form class="contact-method contact-method--form reveal" data-quote-mail-form data-mail-to="yazid123487@gmail.com">
+        <span class="contact-method__icon">${icons.email}</span>
+        <h3>Devis par email</h3>
+        <input type="text" name="name" placeholder="Votre nom" required />
+        <input type="tel" name="phone" placeholder="Votre telephone" required />
+        <textarea name="message" rows="3" placeholder="Votre message" required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>`
+    );
+  }
 }
 
 function initHeader() {
@@ -448,6 +470,91 @@ function initSmoothScroll() {
   });
 }
 
+function initQuoteMailComposer() {
+  const form = document.querySelector("[data-quote-mail-form]");
+  if (!(form instanceof HTMLFormElement)) return;
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  const isEmailJsReady =
+    typeof window.emailjs !== "undefined" &&
+    emailJsQuoteConfig.publicKey !== "YOUR_EMAILJS_PUBLIC_KEY" &&
+    emailJsQuoteConfig.serviceId !== "YOUR_EMAILJS_SERVICE_ID" &&
+    emailJsQuoteConfig.templateId !== "YOUR_EMAILJS_TEMPLATE_ID";
+
+  if (isEmailJsReady) {
+    window.emailjs.init({ publicKey: emailJsQuoteConfig.publicKey });
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const email = form.getAttribute("data-mail-to");
+    const nameField = form.querySelector('input[name="name"]');
+    const phoneField = form.querySelector('input[name="phone"]');
+    const messageField = form.querySelector('textarea[name="message"]');
+    if (
+      !email ||
+      !(nameField instanceof HTMLInputElement) ||
+      !(phoneField instanceof HTMLInputElement) ||
+      !(messageField instanceof HTMLTextAreaElement)
+    ) {
+      return;
+    }
+
+    const name = nameField.value.trim();
+    const phone = phoneField.value.trim();
+    const message = messageField.value.trim();
+    if (!name || !phone || !message) return;
+
+    if (submitButton instanceof HTMLButtonElement) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Envoi...";
+    }
+
+    const fallbackToMailto = () => {
+      const subject = encodeURIComponent("Demande de devis Osiria");
+      const body = encodeURIComponent(
+        `Nom: ${name}\nTelephone: ${phone}\n\nMessage:\n${message}\n\n---\nEnvoye depuis la page devis Osiria`
+      );
+      window.location.href = `mailto:${encodeURIComponent(email)}?subject=${subject}&body=${body}`;
+    };
+
+    if (!isEmailJsReady) {
+      fallbackToMailto();
+      if (submitButton instanceof HTMLButtonElement) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Envoyer";
+      }
+      return;
+    }
+
+    window.emailjs
+      .send(emailJsQuoteConfig.serviceId, emailJsQuoteConfig.templateId, {
+        from_name: name,
+        phone,
+        message,
+        to_email: email,
+      })
+      .then(() => {
+        form.reset();
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.textContent = "Envoye";
+          setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.textContent = "Envoyer";
+          }, 1800);
+        }
+      })
+      .catch(() => {
+        fallbackToMailto();
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.disabled = false;
+          submitButton.textContent = "Envoyer";
+        }
+      });
+  });
+}
+
 function initReveal() {
   const elements = document.querySelectorAll(".reveal");
   const observer = new IntersectionObserver(
@@ -473,4 +580,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal();
   fixContactLinks();
   initSmoothScroll();
+  initQuoteMailComposer();
 });
