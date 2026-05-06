@@ -48,6 +48,10 @@
     padding-bottom: 150px;
   }
 
+  body.home-page {
+    padding-bottom: 0;
+  }
+
   .site-header {
     grid-template-columns: auto auto;
     justify-content: space-between;

@@ -48,6 +48,10 @@ body.devis-page {
   padding-bottom: 0;
 }
 
+body.home-page {
+  padding-bottom: 0;
+}
+
 img,
 svg {
   display: block;
