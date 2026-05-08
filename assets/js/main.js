@@ -29,28 +29,28 @@ const icons = {
 
 const services = [
   {
+    icon: "building",
+    title: "Copropriétés",
+    text: "Entretien des parties communes, halls, couloirs et surfaces textiles partagees pour conserver un immeuble propre et accueillant.",
+    tag: "Syndics & residences",
+  },
+  {
+    icon: "office",
+    title: "Bureaux et locaux commerciaux",
+    text: "Nettoyage des bureaux, chaises, moquettes, salles de reunion et espaces clients, avec intervention possible hors horaires d'ouverture.",
+    tag: "Entreprises",
+  },
+  {
+    icon: "hotel",
+    title: "Airbnb",
+    text: "Remise en etat rapide entre deux locations : canapes, matelas, tapis et textiles pour accueillir chaque voyageur dans un logement impeccable.",
+    tag: "Locations courtes",
+  },
+  {
     icon: "sofa",
-    title: "Canapes & sofas",
-    text: "Tissu, velours, microfibre, cuir : extraction profonde, anti-acariens et deodorisation avec un resultat visible des la premiere intervention.",
-    tag: "Particuliers & pro",
-  },
-  {
-    icon: "bed",
-    title: "Matelas",
-    text: "Elimination des acariens, bacteries et taches organiques. Assainissement vapeur haute temperature pour un sommeil sain.",
-    tag: "Hygiene garantie",
-  },
-  {
-    icon: "carpet",
-    title: "Tapis & moquettes",
-    text: "Tapis d'orient, laine, synthetique, moquette murale. Injection-extraction vapeur seche, sechage rapide, toutes dimensions.",
-    tag: "Toutes tailles",
-  },
-  {
-    icon: "chair",
-    title: "Chaises & fauteuils",
-    text: "Chaises de bureau, fauteuils design, chaises de salle a manger : toutes matieres, rembourrage et structure inclus.",
-    tag: "Mobilier complet",
+    title: "Canapés, matelas...",
+    text: "Nettoyage en profondeur des canapes, matelas, fauteuils, tapis et textiles du quotidien, adapte a chaque matiere.",
+    tag: "Particuliers",
   },
 ];
 
@@ -132,11 +132,10 @@ const googleReviewsConfig = {
 };
 
 const partners = [
-  ["BLACKBOX", "Partenaire strategique", true],
-  ["HAUSSMANN+", "Agence immobiliere"],
-  ["ATELIER 16", "Decoration interieure"],
-  ["RESIDENCES M", "Gestion locative"],
-  ["CONCIERG.IDF", "Conciergerie Airbnb"],
+  { name: "Blackbox", image: "assets/img/partners/blackbox.png" },
+  { name: "Airbnb", image: "assets/img/partners/airbnb.png" },
+  { name: "Agence Smith", image: "assets/img/partners/agence-smith.png" },
+  { name: "Booking.com", image: "assets/img/partners/booking.png" },
 ];
 
 const commitments = [
@@ -374,12 +373,9 @@ function initContent() {
   mountList(
     "[data-partners]",
     partners,
-    ([name, badge, featured]) => `
-      <article class="partner-card${featured ? " is-featured" : ""}">
-        <div>
-          <strong>${name}</strong>
-          <span>${badge}</span>
-        </div>
+    (item) => `
+      <article class="partner-card">
+        <img src="${item.image}" alt="${item.name}" loading="lazy" />
       </article>`
   );
 

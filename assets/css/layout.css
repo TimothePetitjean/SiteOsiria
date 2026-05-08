@@ -498,51 +498,35 @@
 }
 
 .partners-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  background: transparent;
   margin-bottom: 52px;
 }
 
 .partner-card {
   display: grid;
-  min-height: 140px;
+  min-height: 156px;
   place-items: center;
-  padding: 30px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--cream);
+  padding: 30px 24px;
   text-align: center;
+  overflow: hidden;
 }
 
 .partner-card:hover {
   background: var(--white);
+  border-color: var(--gold-light);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
 }
 
-.partner-card.is-featured {
-  position: relative;
-  background: var(--ink);
-}
-
-.partner-card.is-featured::before {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 2px;
-  background: var(--gold);
-  content: "";
-}
-
-.partner-card strong {
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-}
-
-.partner-card span {
-  color: var(--gold);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.partner-card.is-featured strong {
-  color: var(--white);
+.partner-card img {
+  width: min(100%, 190px);
+  height: 78px;
+  object-fit: contain;
 }
 
 .trust-list {
