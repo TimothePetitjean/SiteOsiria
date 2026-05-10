@@ -842,6 +842,25 @@
   transition: color 180ms ease;
 }
 
+.footer-grid .footer-brand {
+  display: inline-flex;
+  margin-bottom: 12px;
+  color: var(--white);
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+
+.footer-grid .footer-brand span {
+  display: inline;
+  margin: 0;
+  color: var(--gold);
+  font: inherit;
+  letter-spacing: inherit;
+}
+
 .footer-grid a:hover {
   color: var(--gold);
 }

@@ -31,25 +31,25 @@ const services = [
   {
     icon: "building",
     title: "Copropriétés",
-    text: "Entretien des parties communes, halls, couloirs et surfaces textiles partagees pour conserver un immeuble propre et accueillant.",
+    text: "Entretien des parties communes, couloirs et surfaces textiles partagées pour conserver un immeuble propre et accueillant.",
     tag: "Syndics & residences",
   },
   {
     icon: "office",
     title: "Bureaux et locaux commerciaux",
-    text: "Nettoyage des bureaux, chaises, moquettes, salles de reunion et espaces clients, avec intervention possible hors horaires d'ouverture.",
+    text: "De vos postes de travail à vos espaces clients, en passant par les salles de réunion et les moquettes. Chaque surface est traitée avec soin. Interventions possibles en dehors des heures d'ouverture, sans impact sur votre organisation.",
     tag: "Entreprises",
   },
   {
     icon: "hotel",
     title: "Airbnb",
-    text: "Remise en etat rapide entre deux locations : canapes, matelas, tapis et textiles pour accueillir chaque voyageur dans un logement impeccable.",
+    text: "Entre deux réservations, chaque détail fait la différence. Nous nettoyons en profondeur pour éliminer taches et odeurs afin d'offrir à chaque voyageur un logement vraiment impeccable. Nous intervenons rapidement, en nous adaptant à vos créneaux de rotation, pour ne jamais compromettre votre planning de réservations.",
     tag: "Locations courtes",
   },
   {
     icon: "sofa",
-    title: "Canapés, matelas...",
-    text: "Nettoyage en profondeur des canapes, matelas, fauteuils, tapis et textiles du quotidien, adapte a chaque matiere.",
+    title: "Canapé, matelas...",
+    text: "Nettoyage en profondeur des canapés, matelas, fauteuils, tapis et textiles du quotidien, adapté à chaque matière (cuir, daim).",
     tag: "Particuliers",
   },
 ];
